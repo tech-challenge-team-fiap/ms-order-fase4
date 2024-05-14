@@ -3,4 +3,4 @@ COPY src /home/app/src
 COPY pom.xml /home/app
 RUN mvn -f /home/app/pom.xml clean package
 EXPOSE 8080
-ENTRYPOINT ["java","-jar","/home/app/target/tech-challenge-docker.jar"]
+ENTRYPOINT ["java","-jar","/home/app/target/ms-order-api-docker.jar"]

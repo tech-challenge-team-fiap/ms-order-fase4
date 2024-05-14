@@ -19,7 +19,6 @@ import br.com.fiap.ms.order.external.infrastructure.repositories.NotificationRep
 import br.com.fiap.ms.order.external.infrastructure.repositories.OrderQueueRepository;
 import br.com.fiap.ms.order.external.infrastructure.repositories.OrderRepository;
 import br.com.fiap.ms.order.external.infrastructure.repositories.ProductRepository;
-import br.com.fiap.techchallenge.external.infrastructure.entities.*;
 
 import java.time.LocalDateTime;
 import java.util.*;

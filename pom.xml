@@ -10,7 +10,7 @@
 	</parent>
 
 	<groupId>br.com.fiap</groupId>
-	<artifactId>ms.order</artifactId>
+	<artifactId>ms-order-fase4</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>ms.order</name>
 	<description>Desafio desenvolvido com ECS e Clean-Architecture para a fase04 do curso de Software Architecture da FIAP Pós Tech.</description>
@@ -137,8 +137,18 @@
             <artifactId>spring-data-jpa</artifactId>
             <version>3.1.4</version>
         </dependency>
+		<dependency>
+			<groupId>com.amazonaws</groupId>
+			<artifactId>aws-java-sdk-core</artifactId>
+			<version>1.12.705</version>
+		</dependency>
+		<dependency>
+			<groupId>com.amazonaws</groupId>
+			<artifactId>aws-java-sdk-dynamodb</artifactId>
+			<version>1.12.705</version>
+		</dependency>
 
-    </dependencies>
+	</dependencies>
 
 	<profiles>
 		<profile>
