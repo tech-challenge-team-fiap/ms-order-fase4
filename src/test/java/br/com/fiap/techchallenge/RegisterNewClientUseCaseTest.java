@@ -1,20 +1,15 @@
 package br.com.fiap.techchallenge;
 
-import br.com.fiap.techchallenge.application.dto.client.ClientDto;
-import br.com.fiap.techchallenge.external.infrastructure.gateway.ClientGatewayImpl;
-import br.com.fiap.techchallenge.external.infrastructure.repositories.ClientRepository;
+import br.com.fiap.ms.order.application.dto.client.ClientDto;
+import br.com.fiap.ms.order.external.infrastructure.gateway.ClientGatewayImpl;
+import br.com.fiap.ms.order.external.infrastructure.repositories.ClientRepository;
 
 import java.time.LocalDateTime;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-
-import java.util.Optional;
-
-import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class RegisterNewClientUseCaseTest {
