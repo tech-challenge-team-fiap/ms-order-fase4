@@ -63,7 +63,7 @@ public class OrderGatewayImpl implements OrderGatewayInterface {
         List<UUID> productsIds = orderFormDto.getProducts().stream().map(ProductOrderFormDto::getId).collect(Collectors.toList());
 
         AtomicReference<BigDecimal> total = new AtomicReference<>(BigDecimal.ZERO);
-        //TODO acionar microservico de produtos
+        //  TODO acionar microservico de produtos
         List<ProductDB> products = (List<ProductDB>) productRepository.findAllById(productsIds);
 
         // Calculated value total of list products
