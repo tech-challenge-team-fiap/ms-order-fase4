@@ -26,7 +26,7 @@ public class ProductServiceImpl implements ProductService {
 
     private final RestTemplate restTemplate;
 
-    @Value("${external.serviceproduct.url}")
+    @Value("${external.service-product.url}")
     private String productMicroService;
 
     @Autowired
