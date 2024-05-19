@@ -4,9 +4,10 @@ import br.com.fiap.techchallengeorder.adapter.gateways.OrderGatewayInterface;
 import br.com.fiap.techchallengeorder.application.dto.order.OrderFormDto;
 import br.com.fiap.techchallengeorder.application.dto.order.OrderListDto;
 import br.com.fiap.techchallengeorder.application.dto.order.OrderResultFormDto;
+import br.com.fiap.techchallengeorder.application.service.ClientService;
+import br.com.fiap.techchallengeorder.application.service.impl.ProductServiceImpl;
 import br.com.fiap.techchallengeorder.domain.enums.StatusOrder;
 import br.com.fiap.techchallengeorder.domain.exception.InvalidProcessException;
-import br.com.fiap.techchallengeorder.domain.exception.client.ClientNotFoundException;
 import br.com.fiap.techchallengeorder.domain.exception.order.InvalidOrderProcessException;
 import br.com.fiap.techchallengeorder.domain.exception.order.OrderNotFoundException;
 import br.com.fiap.techchallengeorder.domain.interfaces.OrderUseCaseInterface;
@@ -15,9 +16,7 @@ import br.com.fiap.techchallengeorder.external.infrastructure.entities.ClientDB;
 import br.com.fiap.techchallengeorder.external.infrastructure.entities.NotificationDB;
 import br.com.fiap.techchallengeorder.external.infrastructure.entities.OrderDB;
 import br.com.fiap.techchallengeorder.external.infrastructure.entities.OrderQueueDB;
-import br.com.fiap.techchallengeorder.external.infrastructure.gateway.ClientGatewayImpl;
 import br.com.fiap.techchallengeorder.external.infrastructure.repositories.OrderRepository;
-import br.com.fiap.techchallengeorder.external.infrastructure.repositories.ProductRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,15 +30,17 @@ public class OrderUseCaseImpl extends AbstractOrderUseCase implements OrderUseCa
 
     private static final Logger logger = LoggerFactory.getLogger(OrderUseCaseImpl.class);
     private final OrderGatewayInterface orderGatewayInterface;
-
-    private final ClientGatewayImpl clientGateway;
+    @Autowired
+    ClientService iClientService;
 
     @Autowired
-    public OrderUseCaseImpl(ProductRepository productRepository, OrderRepository orderRepository,OrderGatewayInterface orderGatewayInterface, ClientGatewayImpl clientGateway) {
-        super(productRepository, orderRepository);
+    ProductServiceImpl productService;
+
+    @Autowired
+    public OrderUseCaseImpl(OrderRepository orderRepository,OrderGatewayInterface orderGatewayInterface) {
+        super(orderRepository);
 
         this.orderGatewayInterface = orderGatewayInterface;
-        this.clientGateway = clientGateway;
     }
 
     @Override
@@ -49,8 +50,7 @@ public class OrderUseCaseImpl extends AbstractOrderUseCase implements OrderUseCa
 
         ClientDB client = null;
         if(orderFormDto.getClientId() != null){
-            client = clientGateway.findById(orderFormDto.getClientId())
-                    .orElseThrow(() -> new ClientNotFoundException(orderFormDto.getClientId().toString()));
+            client = iClientService.clientFindById(orderFormDto.getClientId());
         }
 
         return orderGatewayInterface.register(orderFormDto, client);

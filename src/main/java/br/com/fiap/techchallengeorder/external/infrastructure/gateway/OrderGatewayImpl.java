@@ -1,6 +1,7 @@
 package br.com.fiap.techchallengeorder.external.infrastructure.gateway;
 
 import br.com.fiap.techchallengeorder.adapter.gateways.OrderGatewayInterface;
+import br.com.fiap.techchallengeorder.application.service.ProductService;
 import br.com.fiap.techchallengeorder.domain.exception.InvalidProcessException;
 import br.com.fiap.techchallengeorder.domain.model.Order;
 import br.com.fiap.techchallengeorder.application.dto.order.OrderFormDto;
@@ -18,7 +19,6 @@ import br.com.fiap.techchallengeorder.external.infrastructure.entities.*;
 import br.com.fiap.techchallengeorder.external.infrastructure.repositories.NotificationRepository;
 import br.com.fiap.techchallengeorder.external.infrastructure.repositories.OrderQueueRepository;
 import br.com.fiap.techchallengeorder.external.infrastructure.repositories.OrderRepository;
-import br.com.fiap.techchallengeorder.external.infrastructure.repositories.ProductRepository;
 
 import java.time.LocalDateTime;
 import java.util.*;
@@ -41,7 +41,8 @@ public class OrderGatewayImpl implements OrderGatewayInterface {
 
     private final OrderRepository orderRepository;
 
-    private final ProductRepository productRepository;
+    @Autowired
+    ProductService iProductService;
 
     private final OrderQueueRepository orderQueueRepository;
 
@@ -50,9 +51,8 @@ public class OrderGatewayImpl implements OrderGatewayInterface {
     private final Payments payments;
 
     @Autowired
-    public OrderGatewayImpl(OrderRepository orderRepository, ProductRepository productRepository, OrderQueueRepository orderQueueRepository, NotificationRepository notificationRepository, Payments payments){
+    public OrderGatewayImpl(OrderRepository orderRepository, OrderQueueRepository orderQueueRepository, NotificationRepository notificationRepository, Payments payments){
         this.orderRepository = orderRepository;
-        this.productRepository = productRepository;
         this.orderQueueRepository = orderQueueRepository;
         this.notificationRepository = notificationRepository;
         this.payments = payments;
@@ -63,7 +63,7 @@ public class OrderGatewayImpl implements OrderGatewayInterface {
         List<UUID> productsIds = orderFormDto.getProducts().stream().map(ProductOrderFormDto::getId).collect(Collectors.toList());
 
         AtomicReference<BigDecimal> total = new AtomicReference<>(BigDecimal.ZERO);
-        List<ProductDB> products = (List<ProductDB>) productRepository.findAllById(productsIds);
+        List<ProductDB> products = (List<ProductDB>) iProductService.productFindAllById(productsIds);
 
         // Calculated value total of list products
         for (ProductDB prod : products) {
@@ -71,7 +71,7 @@ public class OrderGatewayImpl implements OrderGatewayInterface {
 
             if (prod.hasStorage()) {
                 prod.mergeQuantity(1);
-                productRepository.save(prod);
+                iProductService.edit(prod);
             } else {
                 throw new InvalidProductStorageException(prod.getId());
             }

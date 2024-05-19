@@ -9,4 +9,8 @@ public class InvalidProductStorageException extends InvalidOrderProcessException
     public InvalidProductStorageException(UUID id) {
         super(tittle, String.format(message, id));
     }
+
+    public InvalidProductStorageException(String name) {
+        super(tittle, String.format(message, name));
+    }
 }

@@ -39,4 +39,12 @@ public class ProductFormDto {
         this.typeStatus = typeStatus;
         this.dateRegister = dateRegister;
     }
+
+    public void mergeQuantity(Integer remove) {
+        this.quantity = this.quantity - remove;
+    }
+
+    public boolean hasStorage() {
+        return this.quantity > 0;
+    }
 }

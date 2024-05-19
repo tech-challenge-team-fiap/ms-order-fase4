@@ -1,6 +1,7 @@
 package br.com.fiap.techchallengeorder.domain.interfaces.abstracts;
 
 import br.com.fiap.techchallengeorder.application.dto.product.ProductOrderFormDto;
+import br.com.fiap.techchallengeorder.application.service.ProductService;
 import br.com.fiap.techchallengeorder.domain.enums.StatusOrder;
 import br.com.fiap.techchallengeorder.domain.exception.InvalidProcessException;
 import br.com.fiap.techchallengeorder.domain.exception.order.InvalidOrderProcessException;
@@ -9,17 +10,19 @@ import br.com.fiap.techchallengeorder.domain.exception.order.InvalidOrderStatusE
 import br.com.fiap.techchallengeorder.domain.exception.order.OrderNotFoundException;
 import br.com.fiap.techchallengeorder.domain.exception.products.ProductNotFoundException;
 import br.com.fiap.techchallengeorder.external.infrastructure.repositories.OrderRepository;
-import br.com.fiap.techchallengeorder.external.infrastructure.repositories.ProductRepository;
 import br.com.fiap.techchallengeorder.external.infrastructure.entities.OrderDB;
 import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 
 @RequiredArgsConstructor
 public abstract class AbstractOrderUseCase {
 
-    private final ProductRepository productRepository;
     private final OrderRepository orderRepository;
+
+    @Autowired
+    ProductService iproductService;
 
     protected void validateProduct(List<ProductOrderFormDto> products) throws InvalidProcessException {
         if (products.isEmpty()) {
@@ -31,7 +34,7 @@ public abstract class AbstractOrderUseCase {
 
     private void doValidateProduct(List<ProductOrderFormDto> products) throws ProductNotFoundException {
         for (ProductOrderFormDto product : products) {
-            if (productRepository.findById(product.getId()).isEmpty()) {
+            if (!iproductService.productFindById(product.getId())) {
                 throw new ProductNotFoundException(product.getId());
             }
         }

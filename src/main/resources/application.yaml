@@ -34,3 +34,8 @@ logging:
   level:
     root: INFO
     br.com.fiap: INFO
+external:
+  serviceproduct:
+    url: http://localhost:8081/products
+  serviceclient:
+    url: http://localhost:8081/clients/

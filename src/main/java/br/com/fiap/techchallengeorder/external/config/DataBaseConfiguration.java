@@ -37,7 +37,7 @@ public class DataBaseConfiguration {
     public LocalContainerEntityManagerFactoryBean entityManagerFactory(DataSource dataSource) {
         LocalContainerEntityManagerFactoryBean em = new LocalContainerEntityManagerFactoryBean();
         em.setDataSource(dataSource);
-        em.setPackagesToScan("br.com.fiap.ms.order.external.infrastructure.entities");
+        em.setPackagesToScan("br.com.fiap.techchallengeorder.external.infrastructure.entities");
         em.setJpaVendorAdapter(new HibernateJpaVendorAdapter());
         return em;
     }
