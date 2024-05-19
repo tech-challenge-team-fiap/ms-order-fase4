@@ -38,4 +38,4 @@ external:
   service-product:
     url: http://localhost:8081/products
   service-client:
-    url: http://localhost:8081/clients/
+    url: http://localhost:8081/clients
